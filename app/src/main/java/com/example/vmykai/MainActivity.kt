@@ -29,11 +29,14 @@ import com.example.vmykai.data.local.UserPreferences
 import com.example.vmykai.data.model.OutageSchedule
 import com.example.vmykai.data.model.QueueId
 import com.example.vmykai.data.remote.KiroeRemoteScheduleSource
+import com.example.vmykai.sync.BatteryOptimization
 import com.example.vmykai.ui.main.MainScreen
 import com.example.vmykai.ui.onboarding.QueuePickerScreen
 import com.example.vmykai.ui.settings.SettingsScreen
 import com.example.vmykai.ui.theme.VmykaiTheme
+import com.example.vmykai.widget.ExactAlarmPermission
 import com.example.vmykai.widget.OutageWidgetUpdater
+import com.example.vmykai.widget.WidgetTickScheduler
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
@@ -73,11 +76,29 @@ private fun VmykaiApp() {
         ActivityResultContracts.RequestPermission(),
     ) {}
 
+    var isIgnoringBatteryOptimizations by remember {
+        mutableStateOf(BatteryOptimization.isIgnoringBatteryOptimizations(context))
+    }
+    val batteryOptimizationLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartActivityForResult(),
+    ) {
+        isIgnoringBatteryOptimizations = BatteryOptimization.isIgnoringBatteryOptimizations(context)
+    }
+
+    var canScheduleExactAlarms by remember { mutableStateOf(ExactAlarmPermission.isGranted(context)) }
+    val exactAlarmLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartActivityForResult(),
+    ) {
+        canScheduleExactAlarms = ExactAlarmPermission.isGranted(context)
+        WidgetTickScheduler.syncTickState(context)
+    }
+
     LaunchedEffect(Unit) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             notificationPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
         }
     }
+    LaunchedEffect(Unit) { WidgetTickScheduler.syncTickState(context) }
     LaunchedEffect(Unit) { preferences.selectedQueue.collect { queueId = it; queueLoaded = true } }
     LaunchedEffect(Unit) { preferences.cachedSchedule.collect { schedule = it } }
     LaunchedEffect(Unit) { preferences.notificationSettings.collect { notificationSettings = it } }
@@ -130,10 +151,18 @@ private fun VmykaiApp() {
                     modifier = Modifier.fillMaxSize().padding(innerPadding),
                     notificationSettings = notificationSettings,
                     currentQueue = currentQueue ?: return@Crossfade,
+                    isIgnoringBatteryOptimizations = isIgnoringBatteryOptimizations,
+                    canScheduleExactAlarms = canScheduleExactAlarms,
                     onBack = { screen = Screen.Main },
                     onNotificationsEnabledChange = { scope.launch { preferences.setNotificationsEnabled(it) } },
                     onLeadMinutesChange = { scope.launch { preferences.setNotificationLeadMinutes(it) } },
                     onChangeQueue = { screen = Screen.ChangeQueue },
+                    onRequestBatteryOptimizationExemption = {
+                        batteryOptimizationLauncher.launch(BatteryOptimization.exemptionIntent(context))
+                    },
+                    onRequestExactAlarmPermission = {
+                        exactAlarmLauncher.launch(ExactAlarmPermission.requestIntent(context))
+                    },
                 )
                 Screen.Main -> MainScreen(
                     modifier = Modifier.fillMaxSize().padding(innerPadding),

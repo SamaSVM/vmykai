@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ButtonDefaults
@@ -39,10 +40,14 @@ private val LEAD_MINUTES_PRESETS = listOf(5, 15, 30, 60)
 fun SettingsScreen(
     notificationSettings: NotificationSettings,
     currentQueue: QueueId,
+    isIgnoringBatteryOptimizations: Boolean,
+    canScheduleExactAlarms: Boolean,
     onBack: () -> Unit,
     onNotificationsEnabledChange: (Boolean) -> Unit,
     onLeadMinutesChange: (Int) -> Unit,
     onChangeQueue: () -> Unit,
+    onRequestBatteryOptimizationExemption: () -> Unit,
+    onRequestExactAlarmPermission: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     Column(
@@ -110,6 +115,56 @@ fun SettingsScreen(
                     colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.onSurface),
                 ) {
                     Text(stringResource(R.string.change_queue_action))
+                }
+            }
+        }
+
+        if (!isIgnoringBatteryOptimizations || !canScheduleExactAlarms) {
+            Spacer(Modifier.height(Spacing.xl))
+
+            SectionLabel(stringResource(R.string.settings_section_background_updates))
+            Spacer(Modifier.height(Spacing.sm))
+
+            if (!isIgnoringBatteryOptimizations) {
+                Card(shape = AppShapes.Card, colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth().padding(Spacing.lg),
+                    ) {
+                        Text(
+                            text = stringResource(R.string.settings_battery_optimization_description),
+                            modifier = Modifier.weight(1f),
+                        )
+                        Spacer(Modifier.width(Spacing.sm))
+                        OutlinedButton(
+                            onClick = onRequestBatteryOptimizationExemption,
+                            colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.onSurface),
+                        ) {
+                            Text(stringResource(R.string.settings_battery_optimization_action))
+                        }
+                    }
+                }
+            }
+
+            if (!canScheduleExactAlarms) {
+                if (!isIgnoringBatteryOptimizations) Spacer(Modifier.height(Spacing.md))
+                Card(shape = AppShapes.Card, colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth().padding(Spacing.lg),
+                    ) {
+                        Text(
+                            text = stringResource(R.string.settings_exact_alarm_description),
+                            modifier = Modifier.weight(1f),
+                        )
+                        Spacer(Modifier.width(Spacing.sm))
+                        OutlinedButton(
+                            onClick = onRequestExactAlarmPermission,
+                            colors = ButtonDefaults.outlinedButtonColors(contentColor = MaterialTheme.colorScheme.onSurface),
+                        ) {
+                            Text(stringResource(R.string.settings_exact_alarm_action))
+                        }
+                    }
                 }
             }
         }

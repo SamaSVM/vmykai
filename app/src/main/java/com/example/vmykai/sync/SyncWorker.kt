@@ -26,6 +26,7 @@ class SyncWorker(context: Context, params: WorkerParameters) : CoroutineWorker(c
             val schedule = repository.refresh()
             reschedulePendingNotification(schedule, preferences)
             OutageWidgetUpdater.updateAll(applicationContext)
+            rescheduleTransitionSync(schedule, preferences)
             Result.success()
         } catch (e: Exception) {
             Result.retry()
@@ -47,5 +48,11 @@ class SyncWorker(context: Context, params: WorkerParameters) : CoroutineWorker(c
 
         val change = NextChangeCalculator.nextChange(schedule, queueId, Instant.now())
         if (change == null) scheduler.cancel() else scheduler.schedule(change, settings.leadMinutes)
+    }
+
+    private suspend fun rescheduleTransitionSync(schedule: OutageSchedule, preferences: UserPreferences) {
+        val queueId = preferences.selectedQueue.first() ?: return
+        val change = NextChangeCalculator.nextChange(schedule, queueId, Instant.now()) ?: return
+        SyncScheduler.scheduleTransitionSync(applicationContext, change.at)
     }
 }

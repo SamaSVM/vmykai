@@ -30,6 +30,11 @@
     <string name="settings_notification_lead_time">Попереджати за, хв</string>
     <string name="settings_notification_lead_time_chip">%1$d хв</string>
     <string name="settings_section_my_queue">Моя черга</string>
+    <string name="settings_section_background_updates">Фонові оновлення</string>
+    <string name="settings_battery_optimization_description">Щоб віджет і сповіщення оновлювались навіть коли застосунок закритий, вимкніть оптимізацію батареї для цього застосунку</string>
+    <string name="settings_battery_optimization_action">Вимкнути</string>
+    <string name="settings_exact_alarm_description">Щоб час на віджеті оновлювався щохвилини, дозвольте застосунку встановлювати точні будильники</string>
+    <string name="settings_exact_alarm_action">Дозволити</string>
     <string name="settings_section_about">Про застосунок</string>
     <string name="settings_version_label">Версія %1$s</string>
     <string name="settings_theme_info">Тема слідує за системною (світла / темна)</string>

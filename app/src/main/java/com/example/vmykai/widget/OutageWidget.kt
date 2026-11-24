@@ -108,6 +108,16 @@ class OutageWidgetFull : GlanceAppWidget() {
 
 class OutageWidgetFullReceiver : GlanceAppWidgetReceiver() {
     override val glanceAppWidget: GlanceAppWidget = OutageWidgetFull()
+
+    override fun onEnabled(context: Context) {
+        super.onEnabled(context)
+        WidgetTickScheduler.syncTickState(context)
+    }
+
+    override fun onDisabled(context: Context) {
+        super.onDisabled(context)
+        WidgetTickScheduler.syncTickState(context)
+    }
 }
 
 @Composable

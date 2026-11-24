@@ -63,6 +63,16 @@ class OutageWidgetCompact : GlanceAppWidget() {
 
 class OutageWidgetCompactReceiver : GlanceAppWidgetReceiver() {
     override val glanceAppWidget: GlanceAppWidget = OutageWidgetCompact()
+
+    override fun onEnabled(context: Context) {
+        super.onEnabled(context)
+        WidgetTickScheduler.syncTickState(context)
+    }
+
+    override fun onDisabled(context: Context) {
+        super.onDisabled(context)
+        WidgetTickScheduler.syncTickState(context)
+    }
 }
 
 /** Full content width, same 10dp-per-side padding convention as the full (4x2) widget. */
