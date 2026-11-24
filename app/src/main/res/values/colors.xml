@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="window_background_day">#FFFFFFFF</color>
+    <color name="window_background_night">#FF1A2140</color>
+
+    <!-- Resolved via the values-night/ qualifier, unlike window_background_* above which are
+         referenced explicitly per values/values-night themes.xml. -->
+    <color name="widget_loading_background">#FFFFFFFF</color>
+    <color name="widget_loading_text">#FF121935</color>
+</resources>

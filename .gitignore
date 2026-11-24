@@ -1,0 +1,18 @@
+# Project exclude paths
+/.gradle/
+/.kotlin/
+local.properties
+*.iml
+.DS_Store
+captures/
+
+# IDE
+.idea/
+
+# AI tool configs
+/.agents/
+/.claude/
+/.codex/
+/.cursor/
+/.impeccable/
+/CLAUDE.md

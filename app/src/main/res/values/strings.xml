@@ -1,0 +1,36 @@
+<resources>
+    <string name="app_name">vmykai</string>
+    <string name="app_title">Графік відключень</string>
+    <string name="status_power_on">Зараз світло є</string>
+    <string name="status_power_off">Зараз світла немає</string>
+    <string name="widget_full_label">Графік відключень (4×2)</string>
+    <string name="widget_compact_label">Графік відключень (4×1)</string>
+
+    <string name="notification_channel_name">Зміна статусу світла</string>
+    <string name="notification_power_on_title">Світло скоро увімкнуть</string>
+    <string name="notification_power_off_title">Світло скоро вимкнуть</string>
+
+    <string name="onboarding_title">Оберіть свою чергу</string>
+    <string name="onboarding_description">Черга визначає, за яким графіком вам показувати відключення. Її завжди можна змінити пізніше в налаштуваннях.</string>
+    <string name="queue_label">Черга %1$s</string>
+    <string name="last_synced_label">Оновлено: %1$s</string>
+    <string name="last_synced_never">Ще не оновлювалось</string>
+    <string name="sync_failed_label">Не вдалось оновити, дані за %1$s</string>
+    <string name="sync_failed_no_data_label">Не вдалося завантажити графік. Перевірте з\'єднання.</string>
+    <string name="tomorrow_not_published">Графік на завтра ще не опубліковано</string>
+    <string name="today_not_available_label">Графік на сьогодні ще не опубліковано</string>
+    <string name="today_label">Сьогодні</string>
+    <string name="tomorrow_label">Завтра</string>
+    <string name="change_queue_action">Змінити чергу</string>
+    <string name="refresh_action">Оновити</string>
+    <string name="back_action">Назад</string>
+    <string name="settings_title">Налаштування</string>
+    <string name="settings_section_notifications">Сповіщення</string>
+    <string name="settings_notifications_enabled">Сповіщення про зміну статусу</string>
+    <string name="settings_notification_lead_time">Попереджати за, хв</string>
+    <string name="settings_notification_lead_time_chip">%1$d хв</string>
+    <string name="settings_section_my_queue">Моя черга</string>
+    <string name="settings_section_about">Про застосунок</string>
+    <string name="settings_version_label">Версія %1$s</string>
+    <string name="settings_theme_info">Тема слідує за системною (світла / темна)</string>
+</resources>
